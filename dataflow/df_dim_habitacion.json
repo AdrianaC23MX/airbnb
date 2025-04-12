@@ -1,0 +1,67 @@
+{
+	"name": "df_dim_habitacion",
+	"properties": {
+		"folder": {
+			"name": "DW"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_tlb_airbnb",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_dim_habitacion",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "sort1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Room_Type as string,",
+				"          Shared_Room as boolean,",
+				"          Private_Room as boolean",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'Select distinct Room_Type, Shared_Room, Private_Room from [dbo].[tbl_airbnb]',",
+				"     format: 'query') ~> source1",
+				"source1 sort(asc(Room_Type, true)) ~> sort1",
+				"sort1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          tipoHabitacion as string,",
+				"          es_compartida as boolean,",
+				"          es_privada as boolean",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          tipoHabitacion = Room_Type,",
+				"          es_compartida = Shared_Room,",
+				"          es_privada = Private_Room",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
