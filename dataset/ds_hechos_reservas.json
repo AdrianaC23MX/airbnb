@@ -1,0 +1,93 @@
+{
+	"name": "ds_hechos_reservas",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sql_dw_airbnb",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DW"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "idReserva",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ciudad",
+				"type": "varchar"
+			},
+			{
+				"name": "dia",
+				"type": "varchar"
+			},
+			{
+				"name": "tipoHabitacion",
+				"type": "varchar"
+			},
+			{
+				"name": "idHost",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "precio",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 8
+			},
+			{
+				"name": "capacidad_personas",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "cleanliness_rating",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 8
+			},
+			{
+				"name": "satisfaccion",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "habitaciones",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "city_center_km",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 8
+			},
+			{
+				"name": "metro_distance_km",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 8
+			},
+			{
+				"name": "attraction_index",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 8
+			},
+			{
+				"name": "restaurant_index",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 8
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "HECHOS_RESERVAS"
+		}
+	}
+}

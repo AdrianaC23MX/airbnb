@@ -1,0 +1,108 @@
+{
+	"name": "df_db_airbnb",
+	"properties": {
+		"folder": {
+			"name": "DB"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "airbnb_csv",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_tlb_airbnb",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          City as string,",
+				"          Price as float,",
+				"          Day as string,",
+				"          {Room Type} as string,",
+				"          {Shared Room} as string,",
+				"          {Private Room} as string,",
+				"          {Person Capacity} as string,",
+				"          Superhost as string,",
+				"          {Multiple Rooms} as string,",
+				"          Business as string,",
+				"          {Cleanliness Rating} as float,",
+				"          {Guest Satisfaction} as string,",
+				"          Bedrooms as string,",
+				"          {City Center (km)} as float,",
+				"          {Metro Distance (km)} as float,",
+				"          {Attraction Index} as float,",
+				"          {Normalised Attraction Index} as float,",
+				"          {Restraunt Index} as float,",
+				"          {Normalised Restraunt Index} as float",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          City as string,",
+				"          Price as decimal(10,8),",
+				"          Day as string,",
+				"          Room_Type as string,",
+				"          Shared_Room as boolean,",
+				"          Private_Room as boolean,",
+				"          Person_Capacity as integer,",
+				"          Superhost as boolean,",
+				"          Multiple_Rooms as boolean,",
+				"          Business as boolean,",
+				"          Cleanliness_Rating as decimal(10,8),",
+				"          Guest_Satisfaction as integer,",
+				"          Bedrooms as integer,",
+				"          City_Center_km as decimal(10,8),",
+				"          Metro_Distance_km as decimal(10,8),",
+				"          Attraction_Index as decimal(10,8),",
+				"          Normalised_Attraction_Index as decimal(10,8),",
+				"          Restaurant_Index as decimal(10,8),",
+				"          Normalised_Restaurant_Index as decimal(10,8)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          City,",
+				"          Price,",
+				"          Day,",
+				"          Room_Type = {Room Type},",
+				"          Shared_Room = {Shared Room},",
+				"          Private_Room = {Private Room},",
+				"          Person_Capacity = {Person Capacity},",
+				"          Superhost,",
+				"          Multiple_Rooms = {Multiple Rooms},",
+				"          Business,",
+				"          Cleanliness_Rating = {Cleanliness Rating},",
+				"          Guest_Satisfaction = {Guest Satisfaction},",
+				"          Bedrooms,",
+				"          City_Center_km = {City Center (km)},",
+				"          Metro_Distance_km = {Metro Distance (km)},",
+				"          Attraction_Index = {Attraction Index},",
+				"          Normalised_Attraction_Index = {Normalised Attraction Index},",
+				"          Restaurant_Index = {Restraunt Index},",
+				"          Normalised_Restaurant_Index = {Normalised Restraunt Index}",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
