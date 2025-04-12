@@ -1,0 +1,93 @@
+{
+	"name": "df_hechos_reservas",
+	"properties": {
+		"folder": {
+			"name": "DW"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_tlb_airbnb",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_hechos_reservas",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          City as string,",
+				"          Day as string,",
+				"          Room_Type as string,",
+				"          idHost as integer,",
+				"          Price as double,",
+				"          Person_Capacity as integer,",
+				"          Cleanliness_Rating as double,",
+				"          Guest_Satisfaction as integer,",
+				"          Bedrooms as integer,",
+				"          City_Center_km as double,",
+				"          Metro_Distance_km as double,",
+				"          Attraction_Index as double,",
+				"          Restaurant_Index as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     query: 'Select City, Day, Room_Type, idHost, Price, Person_Capacity, Cleanliness_Rating, Guest_Satisfaction, Bedrooms, City_Center_km, Metro_Distance_km, Attraction_Index, Restaurant_Index from [dbo].[tbl_airbnb]',",
+				"     format: 'query') ~> source1",
+				"source1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          idReserva as integer,",
+				"          ciudad as string,",
+				"          dia as string,",
+				"          tipoHabitacion as string,",
+				"          idHost as integer,",
+				"          precio as decimal(10,8),",
+				"          capacidad_personas as integer,",
+				"          cleanliness_rating as decimal(10,8),",
+				"          satisfaccion as integer,",
+				"          habitaciones as integer,",
+				"          city_center_km as decimal(10,8),",
+				"          metro_distance_km as decimal(10,8),",
+				"          attraction_index as decimal(10,8),",
+				"          restaurant_index as decimal(10,8)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ciudad = City,",
+				"          dia = Day,",
+				"          tipoHabitacion = Room_Type,",
+				"          idHost,",
+				"          precio = Price,",
+				"          capacidad_personas = Person_Capacity,",
+				"          cleanliness_rating = Cleanliness_Rating,",
+				"          satisfaccion = Guest_Satisfaction,",
+				"          habitaciones = Bedrooms,",
+				"          city_center_km = City_Center_km,",
+				"          metro_distance_km = Metro_Distance_km,",
+				"          attraction_index = Attraction_Index,",
+				"          restaurant_index = Restaurant_Index",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
